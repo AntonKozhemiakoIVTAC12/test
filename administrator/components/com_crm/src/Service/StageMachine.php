@@ -45,9 +45,19 @@ final class StageMachine
         return [
             self::STAGE_ICE => [
                 'title' => 'Ice',
-                'forbidden' => [],
+                'forbidden' => [
+                    self::ACTION_COMMENT,
+                    self::ACTION_DISCOVERY,
+                    self::ACTION_PLAN_DEMO,
+                    self::ACTION_DEMO_LINK,
+                    self::ACTION_CREATE_LEAD,
+                    self::ACTION_SEND_QUOTE,
+                    self::ACTION_INVOICE,
+                    self::ACTION_PAYMENT,
+                    self::ACTION_CERTIFICATE,
+                ],
                 'entry' => null,
-                'exit' => null,
+                'exit' => 'contact_attempt',
             ],
             self::STAGE_TOUCHED => [
                 'title' => 'Touched',
@@ -205,6 +215,11 @@ final class StageMachine
 
         $nextStage = null;
         switch ($eventType) {
+            case 'contact_attempt':
+                if ($currentStage === self::STAGE_ICE && $rule['exit'] === 'contact_attempt') {
+                    $nextStage = self::STAGE_TOUCHED;
+                }
+                break;
             case 'lpr_conversation':
                 if ($rule['exit'] === 'lpr_conversation') {
                     $nextStage = self::STAGE_AWARE;
