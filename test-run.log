@@ -1,0 +1,10 @@
+﻿PHPUnit 10.5.63 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.5.3
+Configuration: C:\Users\anton\test\phpunit.xml
+
+.................                                                 17 / 17 (100%)
+
+Time: 00:00.008, Memory: 8.00 MB
+
+OK (17 tests, 25 assertions)

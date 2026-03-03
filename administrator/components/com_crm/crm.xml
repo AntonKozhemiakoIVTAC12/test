@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade" version="4.0"
+  xmlns="https://www.joomla.org/xmlns/joomla/extension">
+  <name>COM_CRM</name>
+  <creationDate>2025-03</creationDate>
+  <author>CRM Prototype</author>
+  <namespace path="src">Crm\Component\Crm</namespace>
+  <install>
+    <sql>
+      <file driver="mysql" charset="utf8mb4">sql/install.mysql.utf8.sql</file>
+    </sql>
+  </install>
+  <uninstall>
+    <sql>
+      <file driver="mysql" charset="utf8mb4">sql/uninstall.mysql.utf8.sql</file>
+    </sql>
+  </uninstall>
+  <administration>
+    <menu link="index.php?option=com_crm">COM_CRM</menu>
+    <submenu>
+      <menu link="index.php?option=com_crm&amp;view=companies" view="companies">COM_CRM_COMPANIES</menu>
+    </submenu>
+  </administration>
+</extension>

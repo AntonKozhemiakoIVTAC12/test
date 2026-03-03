@@ -1,0 +1,44 @@
+# Joomla 4 + MySQL для прототипа CRM stages
+# Запуск: docker compose up -d
+# После первого запуска: установить Joomla через браузер (localhost:8080),
+# затем установить компонент com_crm из administrator или скопировать файлы компонента.
+
+version: "3.8"
+
+services:
+  joomla:
+    image: joomla:4
+    ports:
+      - "8080:80"
+    environment:
+      JOOMLA_DB_HOST: db
+      JOOMLA_DB_NAME: joomla
+      JOOMLA_DB_USER: joomla
+      JOOMLA_DB_PASSWORD: joomla
+      JOOMLA_DB_PREFIX: j_
+    volumes:
+      - joomla_data:/var/www/html
+      - ./components/com_crm:/var/www/html/components/com_crm
+      - ./administrator/components/com_crm:/var/www/html/administrator/components/com_crm
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: joomla
+      MYSQL_USER: joomla
+      MYSQL_PASSWORD: joomla
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./install.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+volumes:
+  joomla_data:
+  mysql_data:
