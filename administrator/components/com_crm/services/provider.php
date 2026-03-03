@@ -1,19 +1,33 @@
 <?php
+/**
+ * @package     Joomla.Administrator
+ * @subpackage  com_crm
+ */
 
-declare(strict_types=1);
+defined('_JEXEC') or die;
 
-namespace Crm\Component\Crm\Administrator\ServiceProvider;
-
-use Crm\Component\Crm\Administrator\Service\StageMachine;
+use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
+use Joomla\CMS\Extension\ComponentInterface;
+use Joomla\CMS\Extension\Service\Provider\ComponentDispatcherFactory;
+use Joomla\CMS\Extension\Service\Provider\MVCFactory;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Crm\Component\Crm\Administrator\Extension\CrmComponent;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
-class CrmProvider implements ServiceProviderInterface
-{
-    public function register(Container $container): void
+return new class () implements ServiceProviderInterface {
+    public function register(Container $container)
     {
-        $container->set(StageMachine::class, function (Container $container) {
-            return new StageMachine();
-        });
+        $container->registerServiceProvider(new MVCFactory('\\Crm\\Component\\Crm'));
+        $container->registerServiceProvider(new ComponentDispatcherFactory('\\Crm\\Component\\Crm'));
+
+        $container->set(
+            ComponentInterface::class,
+            function (Container $container) {
+                $component = new CrmComponent($container->get(ComponentDispatcherFactoryInterface::class));
+                $component->setMVCFactory($container->get(MVCFactoryInterface::class));
+                return $component;
+            }
+        );
     }
-}
+};

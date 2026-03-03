@@ -18,7 +18,7 @@
   <administration>
     <menu link="index.php?option=com_crm">COM_CRM</menu>
     <submenu>
-      <menu link="index.php?option=com_crm&amp;view=companies" view="companies">COM_CRM_COMPANIES</menu>
+      <menu link="index.php?option=com_crm&amp;view=companies">COM_CRM_COMPANIES</menu>
     </submenu>
   </administration>
 </extension>
